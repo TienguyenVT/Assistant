@@ -1,0 +1,243 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #2c3e50;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    color: white;
+    transition: transform 0.3s ease-in-out;
+}
+
+.sidebar.hidden {
+    transform: translateX(-100%);
+}
+
+.sidebar button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 15px;
+    background-color: #34495e;
+    color: white;
+    cursor: pointer;
+    text-align: left;
+    font-size: 16px;
+}
+
+.sidebar button:hover {
+    background-color: #1abc9c;
+}
+
+.main-content {
+    margin-left: 290px;
+    padding: 20px;
+    width: calc(100% - 290px);
+    transition: margin-left 0.3s ease-in-out;
+}
+
+.main-content.expanded {
+    margin-left: 40px;
+}
+
+h1 {
+    border: 2px solid #ccc;
+    padding: 10px;
+    display: inline-block;
+    background-color: white;
+    border-radius: 15px;
+}
+
+.chat-container {
+    height: 500px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: white;
+    border-radius: 15px;
+}
+
+.message {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    
+}
+
+.user-message {
+    background-color: #e6f7ff;
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin-left: auto;
+    width: fit-content;
+    max-width: 70%;
+    word-wrap: break-word;
+    display: flex;
+}
+
+.bot-message {
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin-right: auto;
+    width: fit-content;
+    max-width: 70%;
+    word-wrap: break-word;
+}
+
+#input-container {
+    display: flex;
+    gap: 10px;
+}
+
+#user-input {
+    flex-grow: 1;
+    padding: 15px;
+    border-radius: 15px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+button {
+    padding: 15px 20px;
+    border: none;
+    border-radius: 15px;
+    background-color: #1abc9c;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #16a085;
+}
+
+.toggle-sidebar {
+    position: fixed;
+    left: 10px;
+    top: 10px;
+    z-index: 1000;
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    /* Hình chữ nhật bo tròn góc khi sidebar mở ra */
+    cursor: pointer;
+    width: 80px;
+    /* Chiều rộng lớn hơn khi sidebar mở */
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease-in-out;
+}
+
+.toggle-sidebar.hidden {
+    width: 40px;
+    /* Hình vuông khi sidebar đóng lại */
+    border-radius: 15px;
+    /* Bo tròn góc nhỏ hơn */
+}
+
+.toggle-sidebar:hover {
+    transform: scale(1.1);
+}
+
+.toggle-sidebar:active {
+    transform: scale(0.9);
+}
+
+.arrow {
+    transition: transform 0.3s ease-in-out;
+}
+
+.arrow.rotated {
+    transform: rotate(180deg);
+}
+
+.sidebar-buttons {
+    margin-top: 50px;
+    /* Đẩy các nút xuống dưới để tránh bị che bởi dấu mũi tên */
+}
+
+.sidebar-auth-buttons {
+    position: absolute;
+    bottom: 50px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.sidebar-auth-buttons button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Hiệu ứng nổi */
+    display: flex;
+    /* Thêm flexbox */
+    justify-content: center;
+    /* Căn giữa theo chiều ngang */
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    text-align: center;
+    /* Đảm bảo chữ luôn ở giữa */
+}
+
+.login-button {
+    background-color: #3498db;
+    color: white;
+}
+
+.register-button {
+    background-color: #2ecc71;
+    color: white;
+}
+
+.login-button:hover {
+    background-color: #2980b9;
+    transform: translateY(-3px);
+    /* Hiệu ứng nâng nhẹ khi hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.register-button:hover {
+    background-color: #27ae60;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1100;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    pointer-events: none;
+}
+
+.notification-container>div {
+    margin-bottom: 10px;
+    pointer-events: auto;
+}
