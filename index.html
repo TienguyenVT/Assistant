@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trợ Lý Ảo Cá Nhân</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<script src="js/auth.js"></script>
+
+<body>
+    <button class="toggle-sidebar" id="toggle-sidebar" onclick="toggleSidebar()">
+        <span class="arrow">▶</span>
+    </button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-buttons">
+            <button onclick="showDateTime()">📅 Xem Ngày, Giờ</button>
+            <button onclick="showWeather()">🌦️ Xem Thời Tiết</button>
+            <button onclick="createSchedule()">📅 Lập Thời Khóa Biểu</button>
+            <button onclick="newChat()">💬 Đoạn Chat Mới</button>
+            <button onclick="showTimerModal()">⏰ Hẹn Giờ / Đếm Ngược</button>
+            
+        </div>
+
+        <div class="sidebar-auth-buttons">
+            <button class="login-button" onclick="showLoginModal()">Đăng Nhập</button>
+            <button class="register-button" onclick="showRegisterModal()">Đăng Ký</button>
+        </div>
+    </div>
+
+    <div class="notification-container" id="notification-container"></div>
+
+    <div class="main-content" id="main-content">
+        <h1>Trợ lý ảo cá nhân</h1>
+        <div class="chat-container" id="chat-container"></div>
+        <div id="input-container">
+            <input type="text" id="user-input" placeholder="Hỏi trợ lý ảo">
+            <button id="send-button" onclick="sendMessage()">Gửi</button>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/timer.js"></script>
+</body>
+
+</html>
