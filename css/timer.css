@@ -1,0 +1,641 @@
+/* ===== MODAL STYLES ===== */
+/* Modal backdrop */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Modal container */
+.timer-modal {
+    background: linear-gradient(135deg, rgba(45,45,45,0.95) 0%, rgba(31,31,31,0.95) 100%);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    border-radius: 20px;
+    color: #e0e0e0;
+    animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    width: 480px;
+    padding: 32px;
+}
+
+/* Close Button */
+.close-button {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    color: #e0e0e0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(4px);
+}
+
+.close-button:hover {
+    background: rgba(239,68,68,0.15);
+    border-color: rgba(239,68,68,0.3);
+    color: #ef4444;
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(239,68,68,0.2);
+}
+
+.close-button:active {
+    transform: scale(0.95);
+}
+
+.timer-modal-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, #60a5fa 0%, #4f46e5 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ===== FORM ELEMENTS ===== */
+/* Form layout */
+.timer-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Time Inputs Container */
+.time-inputs-container {
+    width: 70%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    background: rgba(26,26,26,0.8);
+    padding: 20px;
+    border-radius: 12px;
+    border: 2px solid rgba(255,255,255,0.1);
+}
+
+/* Form inputs */
+.timer-input {
+    padding: 12px;
+    text-align: center;
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    background: rgba(26,26,26,0.95);
+    color: #e0e0e0;
+    font-size: 18px;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.timer-input:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79,70,229,0.3);
+    transform: scale(1.01);
+}
+
+/* Form labels */
+.timer-label {
+    text-align: center;
+    color: #a0a0a0;
+    font-size: 14px;
+    margin-top: 8px;
+}
+
+/* Form groups */
+.timer-form-group {
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+.timer-type-group,
+.timer-hours-group,
+.timer-minutes-group,
+.timer-seconds-group,
+.timer-note-group {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* ===== BUTTON STYLES ===== */
+/* Timer Button Styles */
+.timer-button {
+    padding: 14px 24px;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 120px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Start Button */
+.start-button {
+    background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+    color: white;
+}
+
+.start-button:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 20px rgba(79,70,229,0.3);
+}
+
+/* Pause Button */
+.pause-button {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+}
+
+.pause-button:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 20px rgba(245,158,11,0.3);
+}
+
+/* 
+
+Button */
+.stop-button {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+}
+
+.stop-button:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 20px rgba(239,68,68,0.3);
+}
+
+/* Active state for all buttons */
+.timer-button:active {
+    transform: scale(0.98);
+}
+
+/* Preset Buttons */
+.preset-container {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    gap: 10px;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+.preset-button {
+    padding: 10px 16px;
+    background: rgba(79,70,229,0.1);
+    border: 1px solid rgba(79,70,229,0.2);
+    border-radius: 10px;
+    color: #60a5fa;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(4px);
+}
+
+.preset-button:hover {
+    background: rgba(79,70,229,0.15);
+    border-color: rgba(79,70,229,0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(79,70,229,0.2);
+}
+
+.preset-button:active {
+    transform: scale(0.98);
+}
+
+/* Timer Controls Container */
+.timer-controls {
+    width: 90%;
+    margin: 24px auto;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+/* ===== NOTIFICATION SYSTEM ===== */
+/* Container cho timer notifications trong sidebar */
+.timer-notifications-sidebar {
+    margin-top: 24px;
+    padding: 0 24px;
+    max-height: 150px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Ẩn notifications khi sidebar thu gọn */
+.sidebar.collapsed .timer-notifications-sidebar {
+    opacity: 0;
+    height: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+/* Notification styles */
+.timer-notification {
+    padding: 12px 20px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    animation: notificationAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+    width: 100%;
+    background: linear-gradient(135deg, rgba(61,61,61,0.7) 0%, rgba(51,51,51,0.7) 100%);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.1);
+    position: relative;
+    box-sizing: border-box;
+    padding-right: 100px;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: center;
+    will-change: transform, opacity, background;
+}
+
+.timer-notification:hover {
+    background: linear-gradient(135deg, rgba(71,71,71,0.7) 0%, rgba(61,61,61,0.7) 100%);
+    border-color: rgba(255,255,255,0.15);
+    transform: translateX(4px);
+    box-shadow: 0 6px 28px rgba(0,0,0,0.25);
+}
+
+/* Notification elements */
+.timer-display {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e0e0e0;
+    min-width: 90px;
+    text-align: center;
+    margin-right: 8px;
+}
+
+.timer-note {
+    font-size: 13px;
+    color: #e0e0e0;
+    margin-right: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: calc(100% - 200px);
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+/* Notification buttons */
+.notification-buttons {
+    display: flex;
+    gap: 4px;
+    margin-left: 12px;
+    flex-shrink: 0;
+    height: 100%;
+    position: absolute;
+    right: 12px;
+    top: 0;
+    align-items: center;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Notification buttons */
+.notification-button {
+    background: transparent;
+    border: none;
+    color: #e0e0e0;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 6px;
+    backdrop-filter: blur(4px);
+    border: 1px solid transparent;
+    margin: 4px;
+}
+
+.notification-button:hover {
+    background: rgba(239,68,68,0.15);
+    border-color: rgba(239,68,68,0.3);
+    color: #ef4444;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(239,68,68,0.2);
+}
+
+.notification-button:active {
+    transform: scale(0.95);
+}
+
+/* Notification styles cho báo thức */
+.alarm-notification {
+    padding: 10px 16px;
+    padding-right: 55px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    animation: notificationAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+    width: 100%;
+    background: linear-gradient(135deg, rgba(61,61,61,0.7) 0%, rgba(51,51,51,0.7) 100%);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.1);
+    position: relative;
+    box-sizing: border-box;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: center;
+    will-change: transform, opacity, background;
+}
+
+.alarm-notification:hover {
+    background: linear-gradient(135deg, rgba(71,71,71,0.7) 0%, rgba(61,61,61,0.7) 100%);
+    border-color: rgba(255,255,255,0.15);
+    transform: translateX(4px);
+    box-shadow: 0 6px 28px rgba(0,0,0,0.25);
+}
+
+/* Container cho thông tin báo thức */
+.alarm-info {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    flex: 1;
+    white-space: nowrap;
+    gap: 4px;
+}
+
+/* Style cho thời gian báo thức */
+.alarm-time {
+    font-size: 15px;
+    font-weight: 600;
+    color: #e0e0e0;
+    flex-shrink: 0;
+    
+}
+
+/* Style cho thời gian đếm ngược */
+.alarm-countdown {
+    font-size: 15px;
+    color: #ff6b6b;
+    opacity: 1;
+    flex-shrink: 0;
+    margin-right: 4px;
+    min-width: 100px;
+}
+
+/* Điều chỉnh style cho ghi chú trong alarm-notification */
+.alarm-notification .timer-note {
+    font-size: 12px;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 0;
+    max-width: none;
+    padding-left: 4px;
+}
+
+/* Active Timers Display */
+.active-timers {
+    width: 70%;
+    margin: 24px auto;
+    background: rgba(26,26,26,0.8);
+    border-radius: 12px;
+    border: 2px solid rgba(255,255,255,0.1);
+    padding: 16px;
+}
+
+.no-timers-message {
+    text-align: center;
+    color: #666;
+    padding: 10px;
+}
+
+.active-timer-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    margin: 8px 0;
+    background: rgba(45,45,45,0.8);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.active-timer-item:hover {
+    background: rgba(79,70,229,0.1);
+    transform: translateX(4px);
+}
+
+/* Animations */
+@keyframes modalSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes notificationSlide {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Tùy chỉnh thanh cuộn cho timer notifications */
+.timer-notifications-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.timer-notifications-sidebar::-webkit-scrollbar-thumb {
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 3px;
+}
+
+.timer-notifications-sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Animation khi notification xuất hiện */
+@keyframes notificationAppear {
+    0% {
+        opacity: 0;
+        transform: translateX(-30px) scale(0.95);
+    }
+    60% {
+        transform: translateX(5px) scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+/* Animation khi notification bị xóa */
+.timer-notification.removing,
+.alarm-notification.removing {
+    animation: notificationRemove 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes notificationRemove {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.9) translateX(30px);
+    }
+}
+
+/* Animation khi timer hết giờ */
+.timer-notification.expired,
+.alarm-notification.expired {
+    animation: timerExpired 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    background: linear-gradient(135deg, rgba(239,68,68,0.2) 0%, rgba(220,38,38,0.2) 100%);
+    border-color: rgba(239,68,68,0.3);
+    transform-origin: center;
+}
+
+@keyframes timerExpired {
+    0%, 100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    25%, 75% {
+        transform: scale(1.03);
+        filter: brightness(1.2);
+    }
+    50% {
+        transform: scale(1.05);
+        filter: brightness(1.3);
+    }
+}
+
+/* Animation khi timer bị pause */
+.timer-notification.paused,
+.alarm-notification.paused {
+    animation: timerPaused 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    background: linear-gradient(135deg, rgba(245,158,11,0.2) 0%, rgba(217,119,6,0.2) 100%);
+    border-color: rgba(245,158,11,0.3);
+    opacity: 0.8;
+    transform-origin: center;
+}
+
+@keyframes timerPaused {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.98);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Error message styles */
+.timer-error {
+    background: linear-gradient(135deg, rgba(239,68,68,0.1) 0%, rgba(220,38,38,0.1) 100%);
+    border: 1px solid rgba(239,68,68,0.3);
+    color: #ef4444;
+    padding: 12px 16px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Error highlight for inputs */
+.timer-input-error {
+    border-color: #ef4444 !important;
+    animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+/* Shake animation */
+@keyframes shake {
+    10%, 90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+    20%, 80% {
+        transform: translate3d(2px, 0, 0);
+    }
+    30%, 50%, 70% {
+        transform: translate3d(-3px, 0, 0);
+    }
+    40%, 60% {
+        transform: translate3d(3px, 0, 0);
+    }
+}
+
+/* Shared hover effect cho cả hai loại notification */
+.timer-notification:hover,
+.alarm-notification:hover {
+    background: linear-gradient(135deg, rgba(71,71,71,0.7) 0%, rgba(61,61,61,0.7) 100%);
+    border-color: rgba(255,255,255,0.15);
+    transform: translateX(4px);
+    box-shadow: 0 6px 28px rgba(0,0,0,0.25);
+}
+
+/* Shared transition properties */
+.timer-notification,
+.alarm-notification {
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: center;
+    will-change: transform, opacity, background;
+}
+
+/* Shared focus effect khi hover vào text */
+.timer-display:hover,
+.alarm-time:hover,
+.alarm-countdown:hover {
+    transform: scale(1.02);
+    text-shadow: 0 0 8px rgba(255,255,255,0.2);
+}
+
+/* Shared transition cho text elements */
+.timer-display,
+.alarm-time,
+.alarm-countdown {
+    transition: all 0.3s ease;
+}
