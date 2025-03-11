@@ -1,0 +1,185 @@
+/* Common Transitions */
+:root {
+    --transition-fast: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --transition-slow: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Transition Utilities */
+.transition-all {
+    transition: all var(--transition-normal);
+}
+
+.transition-transform {
+    transition: transform var(--transition-normal);
+}
+
+.transition-opacity {
+    transition: opacity var(--transition-normal);
+}
+
+.transition-colors {
+    transition: background-color var(--transition-normal), 
+                border-color var(--transition-normal), 
+                color var(--transition-normal);
+}
+
+/* Transform Utilities */
+.transform-scale {
+    transform: scale(var(--scale, 1));
+}
+
+.transform-translate-x {
+    transform: translateX(var(--translate-x, 0));
+}
+
+.transform-translate-y {
+    transform: translateY(var(--translate-y, 0));
+}
+
+.transform-rotate {
+    transform: rotate(var(--rotate, 0deg));
+}
+
+/* Hover Effects */
+.hover-scale:hover {
+    --scale: 1.05;
+}
+
+.hover-translate-x:hover {
+    --translate-x: 4px;
+}
+
+.hover-translate-y:hover {
+    --translate-y: -4px;
+}
+
+/* Active States */
+.active-scale:active {
+    --scale: 0.95;
+}
+
+/* Animation Durations */
+.duration-75 {
+    transition-duration: 75ms;
+}
+
+.duration-100 {
+    transition-duration: 100ms;
+}
+
+.duration-150 {
+    transition-duration: 150ms;
+}
+
+.duration-300 {
+    transition-duration: 300ms;
+}
+
+.duration-500 {
+    transition-duration: 500ms;
+}
+
+/* Animation Delays */
+.delay-75 {
+    transition-delay: 75ms;
+}
+
+.delay-100 {
+    transition-delay: 100ms;
+}
+
+.delay-150 {
+    transition-delay: 150ms;
+}
+
+/* Common Animation Classes */
+.animate-fade-in {
+    animation: fadeIn var(--transition-normal);
+}
+
+.animate-slide-up {
+    animation: slideUp var(--transition-normal);
+}
+
+.animate-slide-down {
+    animation: slideDown var(--transition-normal);
+}
+
+.animate-slide-left {
+    animation: slideLeft var(--transition-normal);
+}
+
+.animate-slide-right {
+    animation: slideRight var(--transition-normal);
+}
+
+.animate-scale {
+    animation: scale var(--transition-normal);
+}
+
+.animate-pulse {
+    animation: pulse 2s var(--ease-in-out) infinite;
+}
+
+.animate-bounce {
+    animation: bounce 1s var(--ease-bounce) infinite;
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Animation States */
+.paused {
+    animation-play-state: paused;
+}
+
+.running {
+    animation-play-state: running;
+}
+
+/* Common Box Shadows */
+.shadow-sm {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.shadow {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-md {
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+}
+
+.shadow-lg {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.shadow-inner {
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Common Border Radius */
+.rounded-sm {
+    border-radius: 0.25rem;
+}
+
+.rounded {
+    border-radius: 0.5rem;
+}
+
+.rounded-md {
+    border-radius: 0.75rem;
+}
+
+.rounded-lg {
+    border-radius: 1rem;
+}
+
+.rounded-full {
+    border-radius: 9999px;
+} 

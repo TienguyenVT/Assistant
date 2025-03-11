@@ -1,0 +1,134 @@
+/* Kiểu dáng thanh bên */
+.sidebar {
+    width: 280px;
+    background: linear-gradient(180deg, rgba(45,45,45,0.95) 0%, rgba(31,31,31,0.95) 100%);
+    padding: 32px 24px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-right: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.2);
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 100;
+    will-change: width, padding;
+}
+
+.sidebar.collapsed {
+    width: 80px;
+    padding: 32px 16px;
+}
+
+.sidebar.hidden {
+    transform: translateX(-100%);
+}
+
+/* Sidebar Buttons */
+.sidebar-buttons {
+    margin-top: 65px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar button {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    margin-bottom: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    background: linear-gradient(135deg, #3d3d3d 0%, #333333 100%);
+    color: #e0e0e0;
+    cursor: pointer;
+    text-align: left;
+    font-size: 15px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar button .button-text {
+    transition: opacity 0.2s ease;
+    white-space: nowrap;
+}
+.sidebar-auth-buttons {
+    margin-top: 24px;
+    display: flex;
+    gap: 12px;
+    padding: 0;
+    width: 100%;
+    justify-content: center;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.sidebar-auth-buttons button {
+    flex: 0 1 110px;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    border-radius: 12px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(61,61,61,0.7);
+    border: 1px solid rgba(255,255,255,0.08);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    white-space: nowrap;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: center;
+    will-change: transform, background, box-shadow;
+}
+
+/* Login button style */
+.login-button {
+    color: #60a5fa;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.login-button:hover {
+    background: rgba(79,70,229,0.15);
+    border-color: rgba(96,165,250,0.3);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25),
+                0 0 0 2px rgba(96,165,250,0.1);
+}
+
+/* Register button style */
+.register-button {
+    color: #34d399;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.register-button:hover {
+    background: rgba(16,185,129,0.15);
+    border-color: rgba(52,211,153,0.3);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25),
+                0 0 0 2px rgba(52,211,153,0.1);
+}
+
+
+/* Animation khi sidebar thu gọn */
+.sidebar.collapsed .sidebar-auth-buttons {
+    opacity: 0;
+    pointer-events: none;
+}
+
+
+/* ... (các styles khác liên quan đến sidebar) ... */
+
+.sidebar-notification-container {
+    margin-top: 16px;
+    padding: 8px;
+    background: rgba(26, 26, 26, 0.9);
+    border-radius: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+} 
