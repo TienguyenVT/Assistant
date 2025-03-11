@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trợ lý ảo cá nhân thông minh hỗ trợ quản lý thời gian và công việc">
+    <title>Trợ Lý Ảo Cá Nhân</title>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/timer.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/schedule.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/input.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/news.css">
+    <link rel="stylesheet" href="css/model-settings.css">
+    <!-- Preload critical scripts -->
+    <link rel="preload" href="js/config.js" as="script">
+    <link rel="preload" href="js/utils.js" as="script">
+</head>
+
+<body>
+    <!-- Sidebar navigation -->
+    <aside class="sidebar" id="sidebar">
+        <!-- Main feature buttons -->
+        <nav class="sidebar-buttons">
+            <button data-function="model-settings" onclick="showModelSettings()" aria-label="Cài đặt mô hình AI">
+                <span class="icon" aria-hidden="true">🤖</span>
+                <span class="button-text">Cài Đặt Mô Hình</span>
+            </button>
+            <button data-function="schedule" onclick="createSchedule()" aria-label="Tạo lịch trình mới">
+                <span class="icon" aria-hidden="true">📝</span>
+                <span class="button-text">Lập Thời Khóa Biểu</span>
+            </button>
+            <button data-function="timer" onclick="showTimerModal()" aria-label="Thiết lập hẹn giờ">
+                <span class="icon" aria-hidden="true">⏰</span>
+                <span class="button-text">Hẹn Giờ / Đếm Ngược</span>
+            </button>
+            <button data-function="news" onclick="showNews()" aria-label="Xem tin tức mới nhất">
+                <span class="icon" aria-hidden="true">📰</span>
+                <span class="button-text">Tin Tức</span>
+            </button>
+            <button data-function="newchat" onclick="newChat()" aria-label="Bắt đầu cuộc trò chuyện mới">
+                <span class="icon" aria-hidden="true">💬</span>
+                <span class="button-text">Đoạn Chat Mới</span>
+            </button>
+        </nav>
+        
+        <!-- Authentication buttons -->
+        <div class="sidebar-auth-buttons">
+            <button class="login-button" onclick="showLoginModal()" aria-label="Đăng nhập vào tài khoản">
+                <span class="icon" aria-hidden="true">🔑</span>
+                <span class="button-text">Đăng Nhập</span>
+            </button>
+            <button class="register-button" onclick="showRegisterModal()" aria-label="Đăng ký tài khoản mới">
+                <span class="icon" aria-hidden="true">📝</span>
+                <span class="button-text">Đăng Ký</span>
+            </button>
+        </div>
+        <!-- Timer notifications container -->
+        <div class="timer-notifications-sidebar" id="timer-notifications-sidebar"></div>
+    </aside>
+    
+    <!-- Sidebar toggle button -->
+    <button class="toggle-sidebar" id="toggle-sidebar" aria-label="Thu gọn/Mở rộng thanh bên">
+        <span class="arrow" aria-hidden="true">▶</span>
+    </button>
+    
+    <!-- Notification system -->
+    <div class="notification-container" id="notification-container" role="alert" aria-live="polite"></div>
+    
+    <!-- Main content area -->
+    <main class="main-content" id="main-content">
+        <h1>Trợ lý ảo cá nhân</h1>
+        
+        <!-- Chat message display area -->
+        <div class="chat-container" id="chat-container" role="log" aria-label="Lịch sử trò chuyện"></div>
+        
+        <!-- User input area -->
+        <div id="input-container">
+            <input 
+                type="text" 
+                id="user-input" 
+                placeholder="Nhập câu hỏi hoặc yêu cầu của bạn..."
+                aria-label="Nhập tin nhắn"
+                autocomplete="off">
+            <button id="send-button" onclick="sendMessage()" aria-label="Gửi tin nhắn">
+                Gửi
+            </button>
+        </div>
+    </main>
+    
+    <!-- Core scripts -->
+    <script type="module">
+        import { showLoginModal, showRegisterModal } from './js/auth.js';
+        import { showTimerModal } from './js/timer.js';
+        import { showNews } from './js/news.js';
+        import { createSchedule } from './js/schedule.js';
+        import { newChat } from './js/chat.js';
+        
+        // Gán các hàm vào window để có thể gọi từ onclick
+        window.showLoginModal = showLoginModal;
+        window.showRegisterModal = showRegisterModal;
+        window.showTimerModal = showTimerModal;
+        window.showNews = showNews;
+        window.createSchedule = createSchedule;
+        window.newChat = newChat;
+    </script>
+
+    <!-- Thêm config.js trước các module khác -->
+    <script type="module" src="js/config.js"></script>
+
+    <!-- Các module khác -->
+    <script type="module" src="js/utils.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/api.js"></script>
+    <script type="module" src="js/sidebar.js"></script>
+    <script type="module" src="js/chat.js"></script>
+    <script type="module" src="js/timer.js"></script>
+    <script type="module" src="js/schedule.js"></script>
+    <script type="module" src="js/news.js"></script>
+    <script type="module" src="js/model-settings.js"></script>
+</body>
+</html>
