@@ -154,5 +154,6 @@ module.exports = {
     registerUser,
     loginUser,
     validateSession,
-    logoutUser
+    logoutUser,
+    db
 }; 
