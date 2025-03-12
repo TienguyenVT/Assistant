@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
+const excel = require('exceljs');
 const { 
     registerUser, 
     loginUser, 
@@ -104,6 +105,132 @@ app.get('/api/user/profile', requireAuth, (req, res) => {
         success: true, 
         user: req.user 
     });
+});
+
+// Admin routes để xem dữ liệu database
+app.get('/api/admin/users', async (req, res) => {
+    try {
+        // Kiểm tra session token
+        const sessionToken = req.headers.authorization;
+        if (!sessionToken) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+
+        // Validate session và kiểm tra role
+        const user = await validateSession(sessionToken);
+        if (user.role !== 'admin') {
+            return res.status(403).json({ error: 'Forbidden' });
+        }
+
+        // Query database
+        const db = require('./database/db').db;
+        db.all('SELECT id, username, email, role, created_at FROM users', [], (err, rows) => {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
+            res.json(rows);
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.get('/api/admin/sessions', async (req, res) => {
+    try {
+        // Kiểm tra session token
+        const sessionToken = req.headers.authorization;
+        if (!sessionToken) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+
+        // Validate session và kiểm tra role
+        const user = await validateSession(sessionToken);
+        if (user.role !== 'admin') {
+            return res.status(403).json({ error: 'Forbidden' });
+        }
+
+        // Query database
+        const db = require('./database/db').db;
+        db.all(`
+            SELECT s.token, s.created_at, u.username 
+            FROM sessions s
+            JOIN users u ON s.user_id = u.id
+        `, [], (err, rows) => {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
+            res.json(rows);
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Export to Excel endpoint
+app.get('/api/admin/export/users', async (req, res) => {
+    try {
+        // Kiểm tra session token
+        const sessionToken = req.headers.authorization;
+        if (!sessionToken) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+
+        // Validate session và kiểm tra role
+        const user = await validateSession(sessionToken);
+        if (user.role !== 'admin') {
+            return res.status(403).json({ error: 'Forbidden' });
+        }
+
+        // Tạo workbook mới
+        const workbook = new excel.Workbook();
+        const worksheet = workbook.addWorksheet('Users');
+
+        // Định nghĩa các cột
+        worksheet.columns = [
+            { header: 'ID', key: 'id', width: 10 },
+            { header: 'Username', key: 'username', width: 20 },
+            { header: 'Email', key: 'email', width: 30 },
+            { header: 'Role', key: 'role', width: 15 },
+            { header: 'Created At', key: 'created_at', width: 20 }
+        ];
+
+        // Style cho header
+        worksheet.getRow(1).font = { bold: true };
+        worksheet.getRow(1).fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFE0E0E0' }
+        };
+
+        // Query database
+        const db = require('./database/db').db;
+        db.all('SELECT id, username, email, role, created_at FROM users', [], (err, rows) => {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
+
+            // Thêm dữ liệu vào worksheet
+            worksheet.addRows(rows);
+
+            // Set response headers
+            res.setHeader(
+                'Content-Type',
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            );
+            res.setHeader(
+                'Content-Disposition',
+                'attachment; filename=users.xlsx'
+            );
+
+            // Gửi file excel
+            workbook.xlsx.write(res)
+                .then(() => {
+                    res.end();
+                });
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
 
 // Serve index.html
