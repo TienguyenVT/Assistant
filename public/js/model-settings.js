@@ -10,6 +10,9 @@ let availableModels = [];
 let currentCategory = 'all';
 const MODEL_CATEGORIES = CONFIG.MODEL.CATEGORIES;
 
+// Thêm biến để theo dõi trạng thái chuyển đổi model
+let isModelSwitching = false;
+
 // Thêm hàm getModelCategory
 function getModelCategory(modelName) {
     // Chuyển tên model về chữ thường để dễ so sánh
@@ -185,7 +188,11 @@ function filterAndDisplayModels(modal) {
                         <span class="model-category-icon">
                             ${MODEL_CATEGORIES[getModelCategory(model.name)].icon}
                         </span>
-                        <button class="select-model-btn" data-model="${model.name}">Chọn</button>
+                        <button class="select-model-btn ${model.name === currentModel ? 'active' : ''}" 
+                                data-model="${model.name}"
+                                ${model.name === currentModel ? 'disabled' : ''}>
+                            ${model.name === currentModel ? 'Đang sử dụng' : 'Chọn'}
+                        </button>
                     </div>
                 </div>
             `).join('')}
@@ -199,12 +206,40 @@ function filterAndDisplayModels(modal) {
             e.preventDefault();
             e.stopPropagation();
             
+            // Kiểm tra nếu đang trong quá trình chuyển đổi
+            if (isModelSwitching) {
+                showNotification('Hệ thống đang trong quá trình chuyển đổi LLM, xin vui lòng chờ', 'info');
+                return;
+            }
+
             const modelName = button.dataset.model;
             
+            // Đóng modal ngay lập tức khi click
+            const backdrop = document.querySelector('.settings-backdrop');
+            if (backdrop) {
+                backdrop.remove();
+            }
+            
             try {
-                // Thêm class loading
-                button.classList.add('loading');
-                button.textContent = 'Đang chọn...';
+                // Đánh dấu đang trong quá trình chuyển đổi
+                isModelSwitching = true;
+                
+                // Tạo và hiển thị thông báo đang chuyển đổi (không tự động xóa)
+                const switchingNotification = document.createElement('div');
+                switchingNotification.className = 'timer-notification info';
+                
+                const noteElement = document.createElement('div');
+                noteElement.className = 'timer-note';
+                noteElement.textContent = `Đang chuyển đổi sang mô hình ${modelName}...`;
+                switchingNotification.appendChild(noteElement);
+                
+                const container = document.querySelector('.timer-notifications-sidebar');
+                if (container) {
+                    container.insertBefore(switchingNotification, container.firstChild);
+                    setTimeout(() => {
+                        switchingNotification.style.opacity = '1';
+                    }, 10);
+                }
                 
                 // Kiểm tra model có tồn tại không
                 const modelExists = availableModels.some(model => model.name === modelName);
@@ -233,43 +268,32 @@ function filterAndDisplayModels(modal) {
                     // Nếu test thành công, cập nhật CONFIG và UI
                     updateModelConfig(modelName);
                     currentModel = modelName;
-
-                    // Cập nhật UI
-                    const allModelItems = modelList.querySelectorAll('.model-item');
-                    allModelItems.forEach(item => {
-                        item.classList.remove('active');
-                        const btn = item.querySelector('.select-model-btn');
-                        btn.textContent = 'Chọn';
-                        btn.classList.remove('loading');
-                    });
-
-                    // Thêm active cho item được chọn
-                    const selectedItem = button.closest('.model-item');
-                    selectedItem.classList.add('active');
-                    button.textContent = 'Đã chọn ✓';
-
-                    showNotification(`Đã chọn mô hình ${modelName}`, 'success');
-
-                    // Đóng modal sau khi test thành công
-                    setTimeout(() => {
-                        const backdrop = document.querySelector('.settings-backdrop');
-                        if (backdrop) {
-                            backdrop.remove();
-                        }
-                    }, 500);
+            
+                    // Xóa thông báo đang chuyển đổi và hiển thị thông báo thành công
+                    if (switchingNotification) {
+                        switchingNotification.remove();
+                    }
+                    showNotification(`Đã chuyển đổi`);
 
                 } catch (testError) {
                     console.error('Test connection error:', testError);
-                    button.classList.remove('loading');
-                    button.textContent = 'Chọn';
+                    // Xóa thông báo đang chuyển đổi và hiển thị thông báo lỗi
+                    if (switchingNotification) {
+                        switchingNotification.remove();
+                    }
                     showNotification('Không thể kết nối với model. Vui lòng kiểm tra Ollama', 'error');
                 }
                 
             } catch (error) {
                 console.error('Error selecting model:', error);
-                button.classList.remove('loading');
-                button.textContent = 'Chọn';
+                // Xóa thông báo đang chuyển đổi và hiển thị thông báo lỗi
+                if (switchingNotification) {
+                    switchingNotification.remove();
+                }
                 showNotification(error.message || 'Không thể chọn mô hình. Vui lòng thử lại.', 'error');
+            } finally {
+                // Kết thúc quá trình chuyển đổi
+                isModelSwitching = false;
             }
         });
     });
@@ -277,17 +301,49 @@ function filterAndDisplayModels(modal) {
 
 // Thêm hàm showNotification nếu chưa có
 function showNotification(message, type = 'info') {
-    const container = document.getElementById('notification-container');
+    const container = document.querySelector('.timer-notifications-sidebar');
     if (!container) return;
     
     const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.textContent = message;
+    notification.className = `timer-notification ${type}`;
     
-    container.appendChild(notification);
+    const noteElement = document.createElement('div');
+    noteElement.className = 'timer-note';
+    noteElement.textContent = message;
+    notification.appendChild(noteElement);
+    
+    const buttonsContainer = document.createElement('div');
+    buttonsContainer.className = 'notification-buttons';
+    
+    const closeButton = document.createElement('button');
+    closeButton.className = 'notification-button';
+    closeButton.textContent = '✕';
+    closeButton.onclick = () => {
+        notification.classList.add('removing');
+        setTimeout(() => notification.remove(), 300);
+    };
+    
+    buttonsContainer.appendChild(closeButton);
+    notification.appendChild(buttonsContainer);
+    
+    // Thêm class dựa trên type
+    if (type === 'success') {
+        notification.style.background = 'linear-gradient(135deg, rgba(16,185,129,0.2) 0%, rgba(52,211,153,0.2) 100%)';
+        notification.style.borderColor = 'rgba(52,211,153,0.3)';
+    } else if (type === 'error') {
+        notification.style.background = 'linear-gradient(135deg, rgba(239,68,68,0.2) 0%, rgba(220,38,38,0.2) 100%)';
+        notification.style.borderColor = 'rgba(239,68,68,0.3)';
+    }
+    
+    container.insertBefore(notification, container.firstChild);
     
     setTimeout(() => {
-        notification.style.opacity = '0';
+        notification.style.opacity = '1';
+    }, 10);
+    
+    // Tự động xóa sau 3 giây
+    setTimeout(() => {
+        notification.classList.add('removing');
         setTimeout(() => notification.remove(), 300);
     }, 3000);
 }
@@ -303,3 +359,8 @@ function initializeModelSettings() {
 
 // Gọi hàm khởi tạo khi trang được load
 document.addEventListener('DOMContentLoaded', initializeModelSettings);
+
+const getValue = selector => {
+    const input = form.querySelector(selector);
+    return input ? parseInt(input.value || 0) : 0;
+};

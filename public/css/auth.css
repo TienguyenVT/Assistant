@@ -166,57 +166,6 @@
     transform: scale(0.98);
 }
 
-/* Notifications */
-.notification-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1100;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.notification {
-    padding: 12px 20px;
-    border-radius: 12px;
-    color: white;
-    font-weight: 500;
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    animation: slideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    width: 100%;
-    max-width: 180px;
-    min-height: 48px;
-    font-size: 14px;
-    background: linear-gradient(135deg, rgba(61,61,61,0.7) 0%, rgba(51,51,51,0.7) 100%);
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,0.1);
-    white-space: normal;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.4;
-    word-wrap: break-word;
-}
-
-.notification.info { 
-    background: linear-gradient(135deg, rgba(96,165,250,0.7) 0%, rgba(59,130,246,0.7) 100%);
-    border-color: rgba(96,165,250,0.3);
-}
-
-.notification.success { 
-    background: linear-gradient(135deg, rgba(52,211,153,0.7) 0%, rgba(5,150,105,0.7) 100%);
-    border-color: rgba(52,211,153,0.3);
-}
-
-.notification.error { 
-    background: linear-gradient(135deg, rgba(239,68,68,0.7) 0%, rgba(220,38,38,0.7) 100%);
-    border-color: rgba(239,68,68,0.3);
-}
-
 /* Animations */
 @keyframes fadeIn {
     from { opacity: 0; }
@@ -243,4 +192,42 @@
         opacity: 1;
         transform: translateX(0);
     }
+}
+
+/* Update notification styles to match timer notifications */
+.notification {
+    padding: 12px 20px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 500;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    animation: notificationAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    width: 100%;
+    background: linear-gradient(135deg, rgba(61,61,61,0.7) 0%, rgba(51,51,51,0.7) 100%);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.1);
+    position: relative;
+    box-sizing: border-box;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: center;
+    will-change: transform, opacity, background;
+}
+
+.notification.info { 
+    background: linear-gradient(135deg, rgba(79,70,229,0.2) 0%, rgba(59,130,246,0.2) 100%);
+    border-color: rgba(79,70,229,0.3);
+}
+
+.notification.success { 
+    background: linear-gradient(135deg, rgba(16,185,129,0.2) 0%, rgba(52,211,153,0.2) 100%);
+    border-color: rgba(52,211,153,0.3);
+}
+
+.notification.error { 
+    background: linear-gradient(135deg, rgba(239,68,68,0.2) 0%, rgba(220,38,38,0.2) 100%);
+    border-color: rgba(239,68,68,0.3);
 }

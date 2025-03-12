@@ -19,8 +19,8 @@
     <link rel="stylesheet" href="css/news.css">
     <link rel="stylesheet" href="css/model-settings.css">
     <!-- Preload critical scripts -->
-    <link rel="preload" href="js/config.js" as="script">
-    <link rel="preload" href="js/utils.js" as="script">
+    <link rel="modulepreload" href="js/config.js" as="script" crossorigin="anonymous">
+    <link rel="modulepreload" href="js/utils.js" as="script" crossorigin="anonymous">
 </head>
 
 <body>
@@ -52,14 +52,26 @@
         
         <!-- Authentication buttons -->
         <div class="sidebar-auth-buttons">
-            <button class="login-button" onclick="showLoginModal()" aria-label="Đăng nhập vào tài khoản">
-                <span class="icon" aria-hidden="true">🔑</span>
-                <span class="button-text">Đăng Nhập</span>
-            </button>
-            <button class="register-button" onclick="showRegisterModal()" aria-label="Đăng ký tài khoản mới">
-                <span class="icon" aria-hidden="true">📝</span>
-                <span class="button-text">Đăng Ký</span>
-            </button>
+            <div class="guest-buttons" id="guestButtons">
+                <button class="login-button" onclick="showLoginModal()" aria-label="Đăng nhập vào tài khoản">
+                    <span class="icon" aria-hidden="true">🔑</span>
+                    <span class="button-text">Đăng Nhập</span>
+                </button>
+                <button class="register-button" onclick="showRegisterModal()" aria-label="Đăng ký tài khoản mới">
+                    <span class="icon" aria-hidden="true">📝</span>
+                    <span class="button-text">Đăng Ký</span>
+                </button>
+            </div>
+            <div class="user-buttons" id="userButtons">
+                <button class="account-button" onclick="showAccountModal()" aria-label="Quản lý tài khoản">
+                    <span class="icon" aria-hidden="true">👤</span>
+                    <span class="button-text">Tài Khoản</span>
+                </button>
+                <button class="logout-button" onclick="handleLogout()" aria-label="Đăng xuất">
+                    <span class="icon" aria-hidden="true">🚪</span>
+                    <span class="button-text">Đăng Xuất</span>
+                </button>
+            </div>
         </div>
         <!-- Timer notifications container -->
         <div class="timer-notifications-sidebar" id="timer-notifications-sidebar"></div>
@@ -70,12 +82,9 @@
         <span class="arrow" aria-hidden="true">▶</span>
     </button>
     
-    <!-- Notification system -->
-    <div class="notification-container" id="notification-container" role="alert" aria-live="polite"></div>
-    
     <!-- Main content area -->
     <main class="main-content" id="main-content">
-        <h1>Trợ lý ảo cá nhân</h1>
+        <h1>Trợ Lý AI</h1>
         
         <!-- Chat message display area -->
         <div class="chat-container" id="chat-container" role="log" aria-label="Lịch sử trò chuyện"></div>
@@ -96,19 +105,36 @@
     
     <!-- Core scripts -->
     <script type="module">
-        import { showLoginModal, showRegisterModal } from './js/auth.js';
-        import { showTimerModal } from './js/timer.js';
-        import { showNews } from './js/news.js';
-        import { createSchedule } from './js/schedule.js';
-        import { newChat } from './js/chat.js';
+        // Import các hàm từ auth.js
+        import { 
+            showLoginModal, 
+            showRegisterModal, 
+            showAccountModal, 
+            handleLogout,
+            checkAuthState
+        } from './js/auth.js';
         
         // Gán các hàm vào window để có thể gọi từ onclick
         window.showLoginModal = showLoginModal;
         window.showRegisterModal = showRegisterModal;
+        window.showAccountModal = showAccountModal;
+        window.handleLogout = handleLogout;
+        
+        // Import và gán các hàm khác
+        import { showTimerModal } from './js/timer.js';
+        import { showNews } from './js/news.js';
+        import { createSchedule } from './js/schedule.js';
+        import { newChat } from './js/chat.js';
+        import { showModelSettings } from './js/model-settings.js';
+        
         window.showTimerModal = showTimerModal;
         window.showNews = showNews;
         window.createSchedule = createSchedule;
         window.newChat = newChat;
+        window.showModelSettings = showModelSettings;
+        
+        // Kiểm tra trạng thái đăng nhập khi trang được tải
+        checkAuthState();
     </script>
 
     <!-- Thêm config.js trước các module khác -->

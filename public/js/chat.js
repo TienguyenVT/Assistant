@@ -33,6 +33,13 @@ async function sendMessage() {
     userInput.value = '';
 
     try {
+        // Kiểm tra trạng thái đăng nhập
+        const sessionToken = localStorage.getItem('sessionToken');
+        if (!sessionToken) {
+            appendMessage("Vui lòng đăng nhập, đăng ký tài khoản để tôi có thể hỗ trợ bạn tốt hơn 😊", false);
+            return;
+        }
+
         if (isWaitingForName) {
             handleNameInput(message);
             return;
@@ -146,15 +153,53 @@ export function newChat() {
     initializeChat();
 }
 
+/**
+ * Chuyển đổi tên người dùng thành dạng viết hoa
+ * @param {string} name - Tên người dùng
+ * @returns {string} Tên đã được viết hoa
+ */
+function capitalizeUserName(name) {
+    return name.split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+}
+
 // Thêm hàm khởi tạo chat
 function initializeChat() {
+    const sessionToken = localStorage.getItem('sessionToken');
     const savedName = localStorage.getItem(CONFIG.USER.storageKey);
+    
+    if (!sessionToken) {
+        appendMessage("Vui lòng đăng nhập hoặc đăng ký để tôi có thể hỗ trợ bạn tốt hơn 😊", false);
+        return;
+    }
+    
     if (savedName) {
-        CONFIG.USER.name = savedName;
-        appendMessage(`Xin chào ${savedName}! 👋 Tôi có thể giúp gì được cho bạn?`, false);
+        const capitalizedName = capitalizeUserName(savedName);
+        CONFIG.USER.name = capitalizedName;
+        appendMessage(`Xin chào ${capitalizedName}! 👋 Tôi có thể giúp gì được cho bạn?`, false);
     } else {
-        appendMessage(CONFIG.PROMPT.INTRODUCTION, false);
-        isWaitingForName = true;
+        // Hiển thị tin nhắn introduction theo thứ tự
+        const intro = CONFIG.PROMPT.INTRODUCTION;
+        
+        // Lời chào
+        appendMessage(intro.GREETING, false);
+        
+        // Tính năng
+        setTimeout(() => {
+            appendMessage("Tôi được đào tạo để:", false);
+            intro.FEATURES.forEach((feature, index) => {
+                setTimeout(() => {
+                    appendMessage(`• ${feature}`, false);
+                }, 200 * (index + 1));
+            });
+        }, 1000);
+        
+        // Yêu cầu tên
+        setTimeout(() => {
+            appendMessage(intro.NAME_REQUEST, false);
+            isWaitingForName = true;
+        }, 3000);
     }
 }
 
@@ -162,12 +207,13 @@ function initializeChat() {
 function handleNameInput(name) {
     name = name.trim();
     if (name) {
-        CONFIG.USER.name = name;
-        localStorage.setItem(CONFIG.USER.storageKey, name);
+        const capitalizedName = capitalizeUserName(name);
+        CONFIG.USER.name = capitalizedName;
+        localStorage.setItem(CONFIG.USER.storageKey, capitalizedName);
         isWaitingForName = false;
-        appendMessage(`Xin chào ${name}! 👋 Tôi có thể giúp gì được cho bạn?`, false);
+        appendMessage(`Xin chào ${capitalizedName}! 👋 Tôi có thể giúp gì được cho bạn?`, false);
     } else {
-        appendMessage('Xin lỗi, tôi chưa nghe rõ tên của bạn. Bạn có thể sử dụng nickname khác được không? 😅', false);
+        appendMessage('Xin lỗi, tôi chưa nghe rõ tên của bạn. Bạn có thể sử dụng nickname khác được không? ��', false);
     }
 }
 

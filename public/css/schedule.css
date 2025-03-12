@@ -7,7 +7,6 @@
     box-shadow: 0 8px 32px rgba(0,0,0,0.4);
     border-radius: 30px;
     color: #e0e0e0;
-    animation: modalSlideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     width: 1150px;
     max-width: 95vw;
     max-height: 85vh;
@@ -20,6 +19,19 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    opacity: 0;
+    animation: modalAppear 0.3s ease-out forwards;
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -48%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
 }
 
 /* Schedule Header */
