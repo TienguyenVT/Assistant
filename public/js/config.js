@@ -3,10 +3,12 @@
  * 
  * Tập trung các thông số cấu hình chính của ứng dụng
  */
+import { API_KEYS } from './secure/api-keys.js';
+
 export const CONFIG = {
     // Cấu hình API
     API: {
-        BASE_URL: 'http://localhost:11434/v1',
+        BASE_URL: API_KEYS.OLLAMA.BASE_URL,
         GEMMA_MODEL: localStorage.getItem('selectedModel') || 'gemma2:2b', // Lấy model từ localStorage nếu có
         OLLAMA_URL: 'http://localhost:11434/api',
         ENDPOINTS: {
@@ -40,15 +42,9 @@ export const CONFIG = {
     
     // Cấu hình AccuWeather API
     ACCUWEATHER: {
-        API_KEY: "vANWrSRtLlt97kQK91wcI1xANQNZ2gCz",
+        API_KEY: API_KEYS.ACCUWEATHER.API_KEY,
         // Mã định danh các thành phố chính
-        LOCATION_KEYS: {
-            "hà nội": "353412",
-            "tp.hcm": "353981",
-            "hồ chí minh": "353981",
-            "đà nẵng": "351939",
-            // Có thể thêm các thành phố khác ở đây
-        }
+        LOCATION_KEYS: API_KEYS.ACCUWEATHER.LOCATION_KEYS
     },
     
     // Từ khóa nhận diện
@@ -73,24 +69,16 @@ export const CONFIG = {
     },
     // Cấu hình prompt
     PROMPT: {
-        SYSTEM: `Bạn là trợ lý ảo tiếng Việt thân thiện. Hãy:
-- Trả lời ngắn gọn, rõ ràng
-- Sử dụng biểu tượng cảm xúc phù hợp 
-- Định dạng với xuống dòng khi cần
-- Luôn kết thúc bằng 1 câu hỏi mở
-- Tránh dùng thuật ngữ phức tạp
-- Luôn trả lời bằng tiếng việt
-- Xưng hô thân thiện với người dùng`,
+        SYSTEM: "Bạn là một trợ lý AI thân thiện, hữu ích và thông minh. Hãy giúp đỡ người dùng một cách chân thành và hiệu quả.",
         INTRODUCTION: {
-            GREETING: "Xin chào👋! Tôi là một trợ lý ảo cá nhân thông minh.",
+            GREETING: "Xin chào! Tôi là trợ lý AI cá nhân của bạn 🤖",
             FEATURES: [
-                "Cung cấp thông tin về thời tiết, thời gian 🌤️",
-                "Tạo thời khóa biểu 📅",
-                "Lập kế hoạch và nhắc nhở ⏰",
-                "Đặt báo thức và hẹn giờ ⌚",
-                "Học hỏi thói quen và hỗ trợ bạn 🧠"
+                "Hỗ trợ trò chuyện và giải đáp thắc mắc",
+                "Hỗ trợ lập trình và giải thuật",
+                "Hỗ trợ tra cứu thông tin",
+                "Hỗ trợ quản lý thời gian và công việc"
             ],
-            NAME_REQUEST: "Tôi có thể xưng hô với bạn như thế nào nhỉ? 😊"
+            NAME_REQUEST: "Tôi có thể gọi bạn là gì? 😊"
         }
     },
     // Thêm cấu hình cho user
@@ -118,6 +106,13 @@ function capitalizeUserName(name) {
         .join(' ');
 }
 
-const capitalizedName = capitalizeUserName(name);
-CONFIG.USER.name = capitalizedName;
-localStorage.setItem(CONFIG.USER.storageKey, capitalizedName);
+// Retrieve existing username from localStorage if it exists
+const existingUserName = localStorage.getItem(CONFIG.USER.storageKey);
+
+if (existingUserName) {
+    const capitalizedName = capitalizeUserName(existingUserName);
+    CONFIG.USER.name = capitalizedName;
+} else {
+    // If no existing username, set to null
+    CONFIG.USER.name = null;
+}

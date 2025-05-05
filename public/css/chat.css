@@ -9,7 +9,8 @@
     border: 1px solid rgba(255,255,255,0.1);
     margin-bottom: 16px;
     min-height: 120px;
-    max-height: calc(90vh - 140px);
+    height: calc(100vh - 160px); /* Adjusted height */
+    max-height: calc(100vh - 120px); /* Increased max-height */
     width: min(1400px, 95%);
     margin-left: auto;
     margin-right: auto;
@@ -38,7 +39,10 @@
     opacity: 0;
     transform-origin: bottom right;
     will-change: transform, opacity;
+    transform: translateY(10px);
+    animation: fadeInUp 0.3s ease forwards;
 }
+
 .user-message {
     background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
     color: #ffffff;
@@ -91,16 +95,16 @@
 
 /* Hiệu ứng hover cho messages */
 .message:hover {
-    transform: translateY(-2px) scale(1.01);
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform: translateY(-2px);
+    transition: transform 0.3s ease;
 }
 
 .user-message:hover {
-    box-shadow: 0 8px 24px rgba(79,70,229,0.2);
+    box-shadow: 0 6px 20px rgba(79,70,229,0.2);
 }
 
 .bot-message:hover {
-    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
 }
 
 /* Animation khi tin nhắn được xóa */
@@ -119,4 +123,50 @@
         margin-bottom: -48px;
     }
 }
-/* ... (các styles khác liên quan đến chat và messages) ... */ 
+
+.text-block {
+    margin: 8px 0;
+    line-height: 1.6;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.text-paragraph {
+    margin: 8px 0;
+}
+
+.bullet-point {
+    margin: 4px 0;
+    padding-left: 16px;
+    position: relative;
+}
+
+.bullet-point::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #4f46e5;
+}
+
+.heading-1 { font-size: 1.5em; font-weight: bold; margin: 16px 0 8px; }
+.heading-2 { font-size: 1.3em; font-weight: bold; margin: 14px 0 8px; }
+.heading-3 { font-size: 1.1em; font-weight: bold; margin: 12px 0 8px; }
+
+/* Animation for messages */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Add smooth transitions for content updates */
+.bot-message .text-block,
+.bot-message .code-container {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* ... (các styles khác liên quan đến chat và messages) ... */

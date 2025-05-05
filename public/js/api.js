@@ -1,4 +1,9 @@
 import { CONFIG } from './config.js';
+import { getApiKey, getApiConfig } from './secure/api-keys.js';
+
+// Biến để theo dõi request đang được thực hiện
+let currentResponseController = null;
+let currentReader = null;
 
 /**
  * Lấy thông tin thời tiết cho một thành phố
@@ -8,16 +13,22 @@ import { CONFIG } from './config.js';
 export async function getWeather(cityName) {
     // Chuẩn hóa tên thành phố và tìm mã định danh
     const normalizedCityName = cityName.toLowerCase().trim();
-    const locationKey = CONFIG.ACCUWEATHER.LOCATION_KEYS[normalizedCityName];
+    const locationKeys = getApiConfig('ACCUWEATHER').LOCATION_KEYS || {};
+    const locationKey = locationKeys[normalizedCityName];
     
     if (!locationKey) {
         return `Không tìm thấy thông tin thời tiết cho ${cityName}.`;
     }
 
+    const apiKey = getApiKey('ACCUWEATHER');
+    if (!apiKey) {
+        return 'Không thể truy cập dịch vụ thời tiết. Vui lòng kiểm tra cấu hình API.';
+    }
+
     try {
         // Tạo URL API với các tham số phù hợp
         const apiUrl = new URL(`https://dataservice.accuweather.com/forecasts/v1/daily/1day/${locationKey}`);
-        apiUrl.searchParams.append('apikey', CONFIG.ACCUWEATHER.API_KEY);
+        apiUrl.searchParams.append('apikey', apiKey);
         apiUrl.searchParams.append('language', 'vi');
         
         // Gọi API AccuWeather
@@ -63,12 +74,22 @@ function formatWeatherData(cityName, forecast) {
 }
 
 /**
- * Gửi yêu cầu đến API Gemma để nhận phản hồi
+ * Gửi yêu cầu đến API Gemma để nhận phản hồi theo stream
  * @param {Array} messages - Mảng các tin nhắn theo định dạng của API
- * @returns {Promise<string>} - Phản hồi từ mô hình Gemma
+ * @param {Function} onChunk - Callback để xử lý từng phần của response
+ * @returns {Promise<string>} - Toàn bộ phản hồi từ mô hình Gemma
  */
-export async function sendGemmaRequest(messages) {
+export async function sendGemmaRequest(messages, onChunk) {
     try {
+        // Cleanup any existing response
+        if (currentResponseController) {
+            currentResponseController.abort();
+        }
+        
+        // Create new controller
+        currentResponseController = new AbortController();
+        const signal = currentResponseController.signal;
+
         const response = await fetch(`${CONFIG.API.BASE_URL}/chat/completions`, {
             method: 'POST',
             headers: {
@@ -76,26 +97,93 @@ export async function sendGemmaRequest(messages) {
             },
             body: JSON.stringify({
                 model: CONFIG.API.GEMMA_MODEL,
-                messages: messages
-            })
+                messages: messages,
+                stream: true,
+                max_tokens_per_chunk: 10
+            }),
+            signal
         });
 
         if (!response.ok) {
-            const errorData = await response.json();
-            console.error('Gemma API error response:', errorData);
             throw new Error(`API responded with status: ${response.status}`);
         }
 
-        const data = await response.json();
+        currentReader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        let fullResponse = '';
         
-        if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-            console.error('Unexpected Gemma API response format:', data);
-            throw new Error('Invalid response format from API');
+        try {
+            while (true) {
+                const {done, value} = await currentReader.read();
+                
+                if (done) {
+                    break;
+                }
+
+                const chunk = decoder.decode(value, {stream: true});
+                buffer += chunk;
+
+                // Process complete messages
+                const lines = buffer.split('\n');
+                buffer = lines.pop() || '';
+
+                for (const line of lines) {
+                    if (line.startsWith('data: ')) {
+                        const data = line.slice(6);
+                        try {
+                            const parsed = JSON.parse(data);
+                            if (parsed.choices?.[0]?.delta?.content) {
+                                const content = parsed.choices[0].delta.content;
+                                fullResponse += content;
+                                if (onChunk) onChunk(content);
+                            }
+                        } catch (e) {
+                            console.warn('Error parsing chunk:', e);
+                        }
+                    }
+                }
+            }
+        } finally {
+            if (currentReader) {
+                try {
+                    await currentReader.cancel();
+                } catch (e) {
+                    console.warn('Error canceling reader:', e);
+                }
+                currentReader = null;
+            }
         }
-        
-        return data.choices[0].message.content;
+
+        return fullResponse;
+
     } catch (error) {
-        console.error('Gemma API error:', error);
-        return 'Đã xảy ra lỗi khi giao tiếp với trợ lý ảo.';
+        if (error.name === 'AbortError') {
+            // Clean throw for expected abort
+            throw error;
+        }
+        console.error('Error in sendGemmaRequest:', error);
+        throw error;
+    } finally {
+        // Always cleanup the controller
+        currentResponseController = null;
+    }
+}
+
+/**
+ * Dừng response stream hiện tại nếu có
+ */
+export async function stopCurrentResponse() {
+    if (currentReader) {
+        try {
+            await currentReader.cancel();
+        } catch (e) {
+            console.warn('Error canceling reader:', e);
+        }
+        currentReader = null;
+    }
+    if (currentResponseController) {
+        currentResponseController.abort();
+        currentResponseController = null;
     }
 }

@@ -291,3 +291,360 @@ button:active {
     transform: translateY(-4px) scale(1.1);
     box-shadow: 0 8px 24px rgba(0,0,0,0.2);
 }
+
+.typing-indicator {
+    display: inline-flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.typing-indicator span {
+    width: 8px;
+    height: 8px;
+    margin: 0 2px;
+    background-color: #90949c;
+    border-radius: 50%;
+    animation: typing 1s infinite ease-in-out;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.text-block {
+    margin: 0;
+    padding: 0;
+    white-space: pre-wrap;
+}
+
+.bullet-point {
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.6;
+    margin: 4px 0;
+}
+
+.bullet-point::before {
+    content: '•';
+    position: absolute;
+    left: 5px;
+    color: #60a5fa;
+}
+
+.heading-1 {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 16px 0 8px;
+    color: #60a5fa;
+}
+
+.heading-2 {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin: 14px 0 7px;
+    color: #60a5fa;
+}
+
+.heading-3 {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 12px 0 6px;
+    color: #60a5fa;
+}
+
+.explanation {
+    color: #93c5fd;
+    font-style: italic;
+    padding: 4px 0;
+    line-height: 1.6;
+}
+
+.text-line {
+    margin: 4px 0;
+}
+
+.code-block {
+    background: #1a1a1a;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 12px 0;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-x: auto;
+    border: 1px solid #333;
+}
+
+.code-container {
+    background: #1a1a1a;
+    border-radius: 8px;
+    margin: 8px 0;
+    border: 1px solid #333;
+    overflow: hidden;
+}
+
+.code-header {
+    background: #2d2d2d;
+    padding: 8px 16px;
+    border-bottom: 1px solid #333;
+}
+
+.code-language {
+    color: #60a5fa;
+    font-size: 0.9em;
+    font-family: 'Fira Code', monospace;
+}
+
+.code-block {
+    margin: 0;
+    padding: 16px;
+    background: #1a1a1a;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-x: auto;
+    white-space: pre;
+}
+
+.code-block code {
+    display: block;
+    color: #e0e0e0;
+}
+
+/* Syntax highlighting cho code */
+.keyword {
+    color: #ff79c6;
+}
+
+.std-class {
+    color: #50fa7b;
+}
+
+.string {
+    color: #f1fa8c;
+}
+
+.number {
+    color: #bd93f9;
+}
+
+.punctuation {
+    color: #ff79c6;
+}
+
+/* Animation cho text hiển thị */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.text-block, .code-container {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Đảm bảo văn bản không bị ngắt dòng không mong muốn */
+.bot-message {
+    white-space: normal;
+    word-break: break-word;
+}
+
+.text-paragraph {
+    margin: 0;
+    line-height: 1.6;
+    white-space: pre-wrap; /* Giữ xuống dòng từ text nhưng gộp khoảng trắng */
+}
+
+.heading {
+    color: #60a5fa;
+    font-weight: 600;
+    font-size: 1.1em;
+    margin: 16px 0 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(96,165,250,0.2);
+}
+
+.bullet {
+    padding-left: 20px;
+    position: relative;
+    margin: 8px 0;
+    line-height: 1.6;
+}
+
+.bullet::before {
+    content: '•';
+    position: absolute;
+    left: 5px;
+    color: #60a5fa;
+}
+
+.message {
+    margin: 12px;
+    padding: 16px;
+    border-radius: 12px;
+    max-width: 85%;
+    line-height: 1.6;
+    animation: slideIn 0.3s ease-out forwards;
+}
+
+.user-message {
+    background-color: #4a5568;
+    color: #fff;
+    margin-left: auto;
+}
+
+.bot-message {
+    background-color: #2d3748;
+    color: #e2e8f0;
+    margin-right: auto;
+    /* Đảm bảo khoảng cách giữa các block */
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.heading-1 {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 16px 0 8px;
+    color: #60a5fa;
+}
+
+.heading-2 {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin: 14px 0 7px;
+    color: #60a5fa;
+}
+
+.heading-3 {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 12px 0 6px;
+    color: #60a5fa;
+}
+
+.bullet-point {
+    padding-left: 20px;
+    position: relative;
+    margin: 4px 0;
+    line-height: 1.5;
+}
+
+.bullet-point::before {
+    content: "•";
+    position: absolute;
+    left: 5px;
+    color: #60a5fa;
+}
+
+.explanation {
+    color: #93c5fd;
+    font-style: italic;
+    padding: 4px 0;
+    line-height: 1.5;
+}
+
+.paragraph {
+    margin: 8px 0;
+    line-height: 1.6;
+    white-space: pre-line;
+}
+
+/* Thêm animation cho tin nhắn */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Thêm animation cho typing indicator */
+@keyframes blink {
+    0%, 100% {
+        opacity: 0.4;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+.typing-indicator span {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background-color: #60a5fa;
+    border-radius: 50%;
+    margin: 0 2px;
+    animation: blink 1s infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+
+
+/* Chat container styles */
+.chat-container {
+    height: auto; /* Để chat.css kiểm soát chiều cao */
+    overflow-y: auto;
+    height: 200px; /* Giảm 5% từ 100px xuống 105px */
+    max-height: calc(100vh - 105px); /* Cũng giảm max-height tương ứng */
+    overflow-y: auto; /* Cho phép cuộn dọc khi nội dung dài */
+    padding: 20px;
+    margin-bottom: 20px; /* Khoảng cách với phần input */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+}
+
+/* Đảm bảo tin nhắn cuối cùng luôn hiển thị đầy đủ */
+.message-container:last-child {
+    margin-bottom: 20px;
+}
+
+/* Tối ưu hiệu ứng cuộn */
+.chat-container {
+    scroll-behavior: smooth;
+    /* Cuộn mượt trên iOS */
+}
+
+/* Đảm bảo nội dung không bị che khuất bởi thanh input */
+#input-container {
+    position: sticky;
+    bottom: 0;
+    background: var(--bg-color);
+    padding: 15px 0;
+    margin-top: auto;
+    z-index: 10;
+}
